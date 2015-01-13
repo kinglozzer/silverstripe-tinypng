@@ -1,0 +1,11 @@
+---
+Name: tinypngconfig
+---
+Image:
+  extensions:
+    - Kinglozzer\SilverStripeTinyPng\ImageExtension
+Injector:
+  Image:
+    class: Kinglozzer\SilverStripeTinyPng\Image
+  Image_Cached:
+    class: Kinglozzer\SilverStripeTinyPng\Image_Cached

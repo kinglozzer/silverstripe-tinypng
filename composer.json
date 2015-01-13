@@ -1,0 +1,20 @@
+{
+	"name": "kinglozzer/silverstripe-tinypng",
+	"type": "silverstripe-module",
+	"homepage": "https://github.com/kinglozzer/silverstripe-tinypng",
+	"keywords": ["silverstripe", "tinypng", "image", "compress"],
+	"authors": [
+		{
+			"name": "Loz Calver",
+			"email": "lozcalver@bigfork.co.uk"
+		}
+	],
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/kinglozzer/silverstripe-tinypng/issues"
+	},
+	"require": {
+		"silverstripe/framework": "~3.1",
+		"kinglozzer/tinypng": "0.0.*"
+	}
+}
