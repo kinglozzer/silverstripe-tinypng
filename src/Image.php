@@ -61,10 +61,10 @@ class Image extends SilverStripeImage implements \Flushable
     }
 
     /**
-     * @param Kinglozzer\TinyPng\Client $client
+     * @param \Kinglozzer\TinyPng\Client $client
      * @return $this
      */
-    public function setClient(Kinglozzer\TinyPng\Client $client)
+    public function setClient(\Kinglozzer\TinyPng\Client $client)
     {
         $this->client = $client;
         return $this;
