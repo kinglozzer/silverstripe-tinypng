@@ -104,6 +104,8 @@ class Image extends SilverStripeImage implements \Flushable
             $cached->Title = $this->Title;
             // Pass through the parent, to store cached images in correct folder.
             $cached->ParentID = $this->ParentID;
+            // Pass through whether the image should be compressed
+            $cached->setCompressed($this->getCompressed());
             return $cached;
         }
     }
@@ -113,18 +115,48 @@ class Image extends SilverStripeImage implements \Flushable
      */
     public function forTemplate()
     {
-        $path = \Director::baseFolder() . '/' . $this->Filename;
-
-        try {
-            if (file_exists($path)) {
-                $this->client->compress($path);
-                $this->client->storeFile($path);
-            }
-        } catch (\Exception $e) {
-            // Do nothing
+        if ($this->getCompressed()) {
+            $this->compressImage();
         }
 
         return parent::forTemplate();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function compressImage()
+    {
+        $base = \Director::baseFolder() . '/';
+
+        $pathPieces = explode('/', $this->Filename);
+        $file = array_pop($pathPieces);
+        $newFilename = implode('/', $pathPieces) . '/Compressed-' . $file;
+
+        try {
+            if (file_exists($base . $this->Filename) && ! file_exists($base . $newFilename)) {
+                $this->client->compress($base . $this->Filename);
+                $this->client->storeFile($base . $newFilename);
+            }
+
+            $this->Filename = $newFilename;
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getURL()
+    {
+        if ($this->getCompressed()) {
+            $this->compressImage();
+        }
+
+        return parent::getURL();
     }
 }
 
