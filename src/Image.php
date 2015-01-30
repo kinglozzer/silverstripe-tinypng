@@ -3,7 +3,6 @@
 namespace Kinglozzer\SilverStripeTinyPng;
 
 use Image as SilverStripeImage;
-use Image_Cached as SilverStripeImage_Cached;
 use Kinglozzer\TinyPng\Client;
 
 class Image extends SilverStripeImage implements \Flushable
@@ -94,9 +93,16 @@ class Image extends SilverStripeImage implements \Flushable
         
         if ($this->ID && $this->Filename && \Director::fileExists($this->Filename)) {
             $cacheFile = call_user_func_array(array($this, "cacheFilename"), $args);
+            $fullPath = \Director::baseFolder() . "/" . $cacheFile;
             
-            if (! file_exists(\Director::baseFolder() . "/" . $cacheFile) || self::$flush) {
+            if (! file_exists($fullPath) || self::$flush) {
                 call_user_func_array(array($this, "generateFormattedImage"), $args);
+
+                // If this image should be compressed, compress it now
+                if ($this->getCompressed()) {
+                    $this->client->compress($fullPath);
+                    $this->client->storeFile($fullPath);
+                }
             }
             
             $cached = \Injector::inst()->createWithArgs('Image_Cached', array($cacheFile));
@@ -104,59 +110,9 @@ class Image extends SilverStripeImage implements \Flushable
             $cached->Title = $this->Title;
             // Pass through the parent, to store cached images in correct folder.
             $cached->ParentID = $this->ParentID;
-            // Pass through whether the image should be compressed
-            $cached->setCompressed($this->getCompressed());
+
             return $cached;
         }
-    }
-    
-    /**
-     * @return string
-     */
-    public function forTemplate()
-    {
-        if ($this->getCompressed()) {
-            $this->compressImage();
-        }
-
-        return parent::forTemplate();
-    }
-
-    /**
-     * @return boolean
-     */
-    public function compressImage()
-    {
-        $base = \Director::baseFolder() . '/';
-
-        $pathPieces = explode('/', $this->Filename);
-        $file = array_pop($pathPieces);
-        $newFilename = implode('/', $pathPieces) . '/Compressed-' . $file;
-
-        try {
-            if (file_exists($base . $this->Filename) && ! file_exists($base . $newFilename)) {
-                $this->client->compress($base . $this->Filename);
-                $this->client->storeFile($base . $newFilename);
-            }
-
-            $this->Filename = $newFilename;
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getURL()
-    {
-        if ($this->getCompressed()) {
-            $this->compressImage();
-        }
-
-        return parent::getURL();
     }
 }
 

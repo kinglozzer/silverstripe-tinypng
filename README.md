@@ -24,7 +24,9 @@ Kinglozzer\SilverStripeTinyPng\Image:
 Add the `Compressed` method to your templates when outputting images:
 
 ```
-{$Image.Compressed.CroppedImage(150, 300)}
+{$Image.CroppedImage(150, 300).Compressed}
 ```
+
+**NOTE:** `Compressed` must be the last modification you call on your image - otherwise you’ll compress an image, then resample it again afterwards, potentially undo-ing the compression.
 
 If you set an invalid API key, or exceed your monthly API allowance, the compression will (intentionally) silently fail: outputting the original, un-compressed image.
