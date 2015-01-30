@@ -3,7 +3,7 @@
 namespace Kinglozzer\SilverStripeTinyPng;
 
 use Image as SilverStripeImage;
-use Kinglozzer\TinyPng\Client;
+use Kinglozzer\TinyPng\Compressor;
 
 class Image extends SilverStripeImage implements \Flushable
 {
@@ -17,9 +17,9 @@ class Image extends SilverStripeImage implements \Flushable
      */
     protected $compressed = false;
     /**
-     * @var Kinglozzer\TinyPng\Client
+     * @var \Kinglozzer\TinyPng\Compressor
      */
-    protected $client;
+    protected $compressor;
 
     /**
      * @param array|null $record
@@ -30,7 +30,7 @@ class Image extends SilverStripeImage implements \Flushable
     {
         parent::__construct($record, $isSingleton, $model);
 
-        $this->setClient(new Client($this->config()->tinypng_api_key));
+        $this->setCompressor(new Compressor($this->config()->tinypng_api_key));
     }
 
     /**
@@ -60,21 +60,21 @@ class Image extends SilverStripeImage implements \Flushable
     }
 
     /**
-     * @param \Kinglozzer\TinyPng\Client $client
+     * @param \Kinglozzer\TinyPng\Compressor $compressor
      * @return $this
      */
-    public function setClient(\Kinglozzer\TinyPng\Client $client)
+    public function setCompressor(\Kinglozzer\TinyPng\Compressor $compressor)
     {
-        $this->client = $client;
+        $this->compressor = $compressor;
         return $this;
     }
 
     /**
-     * @return Kinglozzer\TinyPng\Client
+     * @return \Kinglozzer\TinyPng\Compressor
      */
-    public function getClient()
+    public function getCompressor()
     {
-        return $this->client;
+        return $this->compressor;
     }
 
     /**
@@ -100,8 +100,12 @@ class Image extends SilverStripeImage implements \Flushable
 
                 // If this image should be compressed, compress it now
                 if ($this->getCompressed()) {
-                    $this->client->compress($fullPath);
-                    $this->client->storeFile($fullPath);
+                    $compressor = $this->getCompressor();
+                    try {
+                        $compressor->compress($fullPath)->writeTo($fullPath);
+                    } catch(\Exception $e) {
+                        // Do nothing, leave the uncompressed image in-place
+                    }
                 }
             }
             

@@ -15,6 +15,6 @@
 	},
 	"require": {
 		"silverstripe/framework": "~3.1",
-		"kinglozzer/tinypng": "0.0.*"
+		"kinglozzer/tinypng": "0.1.*"
 	}
 }
