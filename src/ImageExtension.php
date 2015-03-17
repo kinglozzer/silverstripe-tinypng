@@ -1,10 +1,6 @@
 <?php
 
-namespace Kinglozzer\SilverStripeTinyPng;
-
-use Extension;
-
-class ImageExtension extends Extension
+class TinyPngImageExtension extends Extension
 {
     public function Compressed()
     {
@@ -12,7 +8,7 @@ class ImageExtension extends Extension
         return $this->owner->getFormattedImage('CompressedImage');
     }
 
-    public function generateCompressedImage(\Image_Backend $backend)
+    public function generateCompressedImage(Image_Backend $backend)
     {
         return $backend;
     }

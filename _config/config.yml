@@ -3,9 +3,9 @@ Name: tinypngconfig
 ---
 Image:
   extensions:
-    - Kinglozzer\SilverStripeTinyPng\ImageExtension
+    - TinyPngImageExtension
 Injector:
   Image:
-    class: Kinglozzer\SilverStripeTinyPng\Image
+    class: TinyPngImage
   Image_Cached:
-    class: Kinglozzer\SilverStripeTinyPng\Image_Cached
+    class: TinyPngImage_Cached

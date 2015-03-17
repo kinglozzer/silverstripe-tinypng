@@ -17,7 +17,7 @@ require: "kinglozzer/silverstripe-tinypng": "dev-master"
 Add your TinyPNG API key to your `_config.yml`:
 
 ```yml
-Kinglozzer\SilverStripeTinyPng\Image:
+TinyPngImage:
   tinypng_api_key: 'xxxx_yyyy_zzzz'
 ```
 

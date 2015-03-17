@@ -1,11 +1,8 @@
 <?php
 
-namespace Kinglozzer\SilverStripeTinyPng;
-
-use Image as SilverStripeImage;
 use Kinglozzer\TinyPng\Compressor;
 
-class Image extends SilverStripeImage implements \Flushable
+class TinyPngImage extends Image implements Flushable
 {
     /**
      * @config
@@ -91,9 +88,9 @@ class Image extends SilverStripeImage implements \Flushable
     {
         $args = func_get_args();
         
-        if ($this->ID && $this->Filename && \Director::fileExists($this->Filename)) {
+        if ($this->ID && $this->Filename && Director::fileExists($this->Filename)) {
             $cacheFile = call_user_func_array(array($this, "cacheFilename"), $args);
-            $fullPath = \Director::baseFolder() . "/" . $cacheFile;
+            $fullPath = Director::baseFolder() . "/" . $cacheFile;
             
             if (! file_exists($fullPath) || self::$flush) {
                 call_user_func_array(array($this, "generateFormattedImage"), $args);
@@ -103,13 +100,13 @@ class Image extends SilverStripeImage implements \Flushable
                     $compressor = $this->getCompressor();
                     try {
                         $compressor->compress($fullPath)->writeTo($fullPath);
-                    } catch(\Exception $e) {
+                    } catch(Exception $e) {
                         // Do nothing, leave the uncompressed image in-place
                     }
                 }
             }
             
-            $cached = \Injector::inst()->createWithArgs('Image_Cached', array($cacheFile));
+            $cached = Injector::inst()->createWithArgs('Image_Cached', array($cacheFile));
             // Pass through the title so the templates can use it
             $cached->Title = $this->Title;
             // Pass through the parent, to store cached images in correct folder.
@@ -120,7 +117,7 @@ class Image extends SilverStripeImage implements \Flushable
     }
 }
 
-class Image_Cached extends Image
+class TinyPngImage_Cached extends TinyPngImage
 {
     /**
      * Create a new cached image.
@@ -158,6 +155,6 @@ class Image_Cached extends Image
      */
     public function write($showDebug = false, $forceInsert = false, $forceWrite = false, $writeComponents = false)
     {
-        throw new \Exception("{$this->ClassName} can not be written back to the database.");
+        throw new Exception("{$this->ClassName} can not be written back to the database.");
     }
 }
