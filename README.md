@@ -9,7 +9,7 @@ An extension to SilverStripe's `Image` class to integrate with the [TinyPNG API]
 With composer:
 
 ```
-require: "kinglozzer/silverstripe-tinypng": "dev-master"
+composer require "kinglozzer/silverstripe-tinypng":"dev-master"
 ```
 
 ##Usage##
