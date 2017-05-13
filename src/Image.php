@@ -101,7 +101,8 @@ class TinyPngImage extends Image implements Flushable
                     try {
                         $compressor->compress($fullPath)->writeTo($fullPath);
                     } catch(Exception $e) {
-                        // Do nothing, leave the uncompressed image in-place
+                        // Log, but do nothing else, leave the uncompressed image in-place
+                        \SS_Log::log('Image compressor failed: ' . $e->getMessage(), SS_Log::ERR);
                     }
                 }
             }
