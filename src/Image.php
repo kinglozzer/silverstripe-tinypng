@@ -129,12 +129,30 @@ class TinyPngImage_Cached extends TinyPngImage
      * @param string $filename The filename of the image.
      * @param boolean $isSingleton This this to true if this is a singleton() object, a stub for calling methods.
      *                             Singletons don't have their defaults set.
+     * @param Image $sourceImage The source image object
      */
-    public function __construct($filename = null, $isSingleton = false)
+    public function __construct($filename = null, $isSingleton = false, Image $sourceImage = null)
     {
         parent::__construct(array(), $isSingleton);
+        if ($sourceImage) {
+            // Copy properties from source image, except unsafe ones
+            $properties = $sourceImage->toMap();
+            unset($properties['RecordClassName'], $properties['ClassName']);
+            $this->update($properties);
+        }
         $this->ID = -1;
         $this->Filename = $filename;
+    }
+
+    /**
+     * Override the parent's exists method becuase the ID is explicitly set to -1 on a cached image we can't use the
+     * default check
+     *
+     * @return bool Whether the cached image exists
+     */
+    public function exists()
+    {
+        return file_exists($this->getFullPath());
     }
 
     /**
