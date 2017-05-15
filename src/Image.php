@@ -87,11 +87,11 @@ class TinyPngImage extends Image implements Flushable
     public function getFormattedImage($format)
     {
         $args = func_get_args();
-        
+
         if ($this->ID && $this->Filename && Director::fileExists($this->Filename)) {
             $cacheFile = call_user_func_array(array($this, "cacheFilename"), $args);
             $fullPath = Director::baseFolder() . "/" . $cacheFile;
-            
+
             if (! file_exists($fullPath) || self::$flush) {
                 call_user_func_array(array($this, "generateFormattedImage"), $args);
 
@@ -102,11 +102,12 @@ class TinyPngImage extends Image implements Flushable
                         $compressor->compress($fullPath)->writeTo($fullPath);
                     } catch(Exception $e) {
                         // Log, but do nothing else, leave the uncompressed image in-place
-                        \SS_Log::log('Image compressor failed: ' . $e->getMessage(), SS_Log::ERR);
+                        SS_Log::log('Image compression failed: ' . $e->getMessage(), SS_Log::ERR);
+                        Debug::message('Image compression failed: ' . $e->getMessage());
                     }
                 }
             }
-            
+
             $cached = Injector::inst()->createWithArgs('Image_Cached', array($cacheFile));
             // Pass through the title so the templates can use it
             $cached->Title = $this->Title;
@@ -132,7 +133,7 @@ class TinyPngImage_Cached extends TinyPngImage
         $this->ID = -1;
         $this->Filename = $filename;
     }
-    
+
     /**
      * @return string
      */
@@ -140,7 +141,7 @@ class TinyPngImage_Cached extends TinyPngImage
     {
         return $this->getField('Filename');
     }
-    
+
     /**
      * Prevent creating new tables for the cached record
      * @return false
@@ -149,7 +150,7 @@ class TinyPngImage_Cached extends TinyPngImage
     {
         return false;
     }
-    
+
     /**
      * Prevent writing the cached image to the database
      * @throws Exception
