@@ -1,10 +1,8 @@
-#SilverStripe TinyPNG#
+# SilverStripe TinyPNG
 
 An extension to SilverStripe's `Image` class to integrate with the [TinyPNG API](https://tinypng.com/developers).
 
-**NOTE:** this is currently just a proof-of-concept: the API is unstable and will almost certainly undergo heavy changes before release 1.0.0.
-
-##Installation##
+## Installation
 
 With composer:
 
@@ -12,7 +10,7 @@ With composer:
 composer require "kinglozzer/silverstripe-tinypng":"dev-master"
 ```
 
-##Usage##
+## Usage
 
 Add your TinyPNG API key to your `_config.yml`:
 
