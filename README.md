@@ -27,4 +27,4 @@ Add the `Compressed` method to your templates when outputting images:
 
 **NOTE:** `Compressed` must be the last modification you call on your image - otherwise you’ll compress an image, then resample it again afterwards, potentially undo-ing the compression.
 
-If you set an invalid API key, or exceed your monthly API allowance, the compression will (intentionally) silently fail: outputting the original, un-compressed image.
+If you set an invalid API key, or exceed your monthly API allowance, then a warning will be shown in dev/test mode. In live mode compression will (intentionally) silently fail and output the un-compressed image, but will still log a message via the `SS_Log` API.
