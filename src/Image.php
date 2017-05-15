@@ -12,7 +12,7 @@ class TinyPngImage extends Image implements Flushable
     /**
      * @var boolean
      */
-    protected $compressed = false;
+    protected $shouldCompress = false;
     /**
      * @var \Kinglozzer\TinyPng\Compressor
      */
@@ -39,21 +39,21 @@ class TinyPngImage extends Image implements Flushable
     }
 
     /**
-     * @param boolean $compressed
+     * @param boolean $shouldCompress
      * @return $this
      */
-    public function setCompressed($compressed)
+    public function setShouldCompress($shouldCompress)
     {
-        $this->compressed = $compressed;
+        $this->shouldCompress = $shouldCompress;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getCompressed()
+    public function getShouldCompress()
     {
-        return $this->compressed;
+        return $this->shouldCompress;
     }
 
     /**
@@ -96,8 +96,9 @@ class TinyPngImage extends Image implements Flushable
                 call_user_func_array(array($this, "generateFormattedImage"), $args);
 
                 // If this image should be compressed, compress it now
-                if ($this->getCompressed()) {
+                if ($this->getShouldCompress()) {
                     $compressor = $this->getCompressor();
+
                     try {
                         $compressor->compress($fullPath)->writeTo($fullPath);
                     } catch(Exception $e) {
@@ -105,6 +106,8 @@ class TinyPngImage extends Image implements Flushable
                         SS_Log::log('Image compression failed: ' . $e->getMessage(), SS_Log::ERR);
                         Debug::message('Image compression failed: ' . $e->getMessage());
                     }
+
+                    $this->shouldCompress = false; // Reset for subsequent manipulations on this image
                 }
             }
 

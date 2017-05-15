@@ -4,7 +4,7 @@ class TinyPngImageExtension extends Extension
 {
     public function Compressed()
     {
-        $this->owner->setCompressed(true);
+        $this->owner->setShouldCompress(true);
         return $this->owner->getFormattedImage('CompressedImage');
     }
 
