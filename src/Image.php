@@ -120,6 +120,26 @@ class TinyPngImage extends Image implements Flushable
             return $cached;
         }
     }
+
+    /**
+     * Require Image's table. As Injector will always load this class instead of
+     * Image, Image may not get a table even when it needs one. For that reason,
+     * we have to avoid Injector and call Image::requireTable() manually
+     */
+    public function requireTable()
+    {
+        static $required = false;
+
+        // This method will be called for both Image and TinyPngImage, but we
+        // only need to call requireTable() once
+        if (!$required) {
+            $img = new Image;
+            $img->requireTable();
+            $required = true;
+        }
+
+        parent::requireTable();
+    }
 }
 
 class TinyPngImage_Cached extends TinyPngImage

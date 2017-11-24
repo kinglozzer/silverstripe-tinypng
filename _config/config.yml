@@ -9,3 +9,5 @@ Injector:
     class: TinyPngImage
   Image_Cached:
     class: TinyPngImage_Cached
+  TinyPngImage_Cached:
+    class: TinyPngImage_Cached
