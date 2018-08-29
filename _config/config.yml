@@ -1,13 +1,11 @@
 ---
 Name: tinypngconfig
 ---
-Image:
+
+SilverStripe\Assets\Image:
   extensions:
-    - TinyPngImageExtension
-Injector:
-  Image:
-    class: TinyPngImage
-  Image_Cached:
-    class: TinyPngImage_Cached
-  TinyPngImage_Cached:
-    class: TinyPngImage_Cached
+  - Kinglozzer\SilverStripeTinyPng\ImageExtension
+
+SilverStripe\Assets\Storage\DBFile:
+  extensions:
+  - Kinglozzer\SilverStripeTinyPng\ImageExtension

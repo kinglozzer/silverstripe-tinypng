@@ -1,20 +1,39 @@
 {
-	"name": "kinglozzer/silverstripe-tinypng",
-	"type": "silverstripe-module",
-	"homepage": "https://github.com/kinglozzer/silverstripe-tinypng",
-	"keywords": ["silverstripe", "tinypng", "image", "compress"],
-	"authors": [
-		{
-			"name": "Loz Calver",
-			"email": "lozcalver@bigfork.co.uk"
-		}
-	],
-	"license": "BSD-3-Clause",
-	"support": {
-		"issues": "https://github.com/kinglozzer/silverstripe-tinypng/issues"
-	},
-	"require": {
-		"silverstripe/framework": "^3.2",
-		"kinglozzer/tinypng": "0.1.*"
-	}
+    "name": "kinglozzer/silverstripe-tinypng",
+    "type": "silverstripe-vendormodule",
+    "homepage": "https://github.com/kinglozzer/silverstripe-tinypng",
+    "keywords": [
+        "silverstripe",
+        "tinypng",
+        "image",
+        "compress"
+    ],
+    "authors": [
+        {
+            "name": "Loz Calver",
+            "email": "lozcalver@bigfork.co.uk"
+        }
+    ],
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/kinglozzer/silverstripe-tinypng/issues"
+    },
+    "require": {
+        "silverstripe/framework": "^4.0",
+        "silverstripe/assets": "^1.0",
+        "tinify/tinify": "^1.5"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Kinglozzer\\SilverStripeTinyPng\\": "src/",
+            "Kinglozzer\\SilverStripeTinyPng\\Tests\\": "tests/php/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
