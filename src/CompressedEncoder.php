@@ -142,6 +142,16 @@ class CompressedEncoder extends AbstractEncoder
         return $this->encoder->processWebp();
     }
 
+    /**
+     * Processes and returns image as AVIF encoded string
+     *
+     * @return string
+     */
+    protected function processAvif()
+    {
+        return $this->encoder->processAvif();
+    }
+
     protected function tinify($buffer)
     {
         $compressed = $buffer;
