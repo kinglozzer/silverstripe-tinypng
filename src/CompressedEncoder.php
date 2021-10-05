@@ -12,7 +12,7 @@ use SilverStripe\Core\Injector\Injectable;
  * Custom encoder that delegates compression of images to the TinyPNG API.
  * Wraps the existing encoder.
  * Only PNG and JPEG image-types will be compressed, other types will be encoded as-is.
- * 
+ *
  * @package Kinglozzer\SilverStripeTinyPng
  */
 class CompressedEncoder extends AbstractEncoder
@@ -150,6 +150,16 @@ class CompressedEncoder extends AbstractEncoder
     protected function processAvif()
     {
         return $this->encoder->processAvif();
+    }
+
+    /**
+     * Processes and returns image as Heic encoded string
+     *
+     * @return string
+     */
+    protected function processHeic()
+    {
+        return $this->encoder->processHeic();
     }
 
     protected function tinify($buffer)
